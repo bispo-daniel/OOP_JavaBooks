@@ -17,8 +17,11 @@ public class Book {
         bookName = bookNameIn;
     }
 
-    public Author getBookAuthor(){
-        return bookAuthor;
+    public int getBookAuthorId(){
+        return bookAuthor.getAuthorId();
+    }
+    public String getBookAuthorName(){
+        return bookAuthor.getAuthorName();
     }
     public void setBookAuthor(Author author){
         bookAuthor = author;

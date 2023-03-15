@@ -6,13 +6,13 @@ public class Start {
     private static int it = 0;
 
     public static void createAuthor(){
-        authorsArr.add(new Author());
-
         String authorId = JOptionPane.showInputDialog(null, "Type the author's Id...");
         int idInteger = Integer.parseInt(authorId);
-        authorsArr.get(it).setAuthorId(idInteger);
-
+        
         String authorName = JOptionPane.showInputDialog(null, "Type the author's name...");
+        
+        authorsArr.add(new Author());
+        authorsArr.get(it).setAuthorId(idInteger);
         authorsArr.get(it).setAuthorName(authorName);
 
         it++;
@@ -21,7 +21,7 @@ public class Start {
 
     public static void listAuthors(){
         for(Author author : authorsArr){
-            JOptionPane.showMessageDialog(null, "Author's id: " + author.getAuthorId() + "\nAuthor's name: " + author.getAuthorName());
+            JOptionPane.showMessageDialog(null, "Author's id: " + author.getAuthorId() + "\nAuthor's name: " + author.getAuthorName() + "\nOn memory: " + author);
         }
 
         menu();
@@ -78,33 +78,53 @@ public class Start {
     static ArrayList<Book> booksArr = new ArrayList<Book>();
     private static int iterator = 0;
 
+    
     private static void createBook() {
-        booksArr.add(new Book());
-
         String idIn = JOptionPane.showInputDialog(null, "Type the book's Id...");
         int bookId = Integer.parseInt(idIn);
-
+        
         String bookName = JOptionPane.showInputDialog(null, "Type the book's name...");
-
+        
         String bookAuthor = JOptionPane.showInputDialog(null, "Type the book's author id...");
         int bookAuthorId = Integer.parseInt(bookAuthor);
-
+        
+        booksArr.add(new Book());
         booksArr.get(iterator).setBookId(bookId);
         booksArr.get(iterator).setBookName(bookName);
 
+        ArrayList<Integer> cloneAuthors = new ArrayList<>();
+        
         for(Author author : authorsArr){
             if(author.getAuthorId() == bookAuthorId){
                 booksArr.get(iterator).setBookAuthor(author);
-            } 
-        }
+                iterator++;
+            } else if(author.getAuthorId() != bookAuthorId){
+                cloneAuthors.add(authorsArr.indexOf(author));
 
-        iterator++;
+                System.out.println("Inside elif: ");
+
+                for(Integer i : cloneAuthors){
+                    System.out.println(i);
+                }
+
+                if(cloneAuthors.size() == authorsArr.size()){
+                    JOptionPane.showMessageDialog(null, "Author does not exist. Try again...");
+                    createBook();
+                }
+            }
+
+        } 
+
         menu();
     }
 
     private static void listBooks() {
-        for(Book book : booksArr){
-            JOptionPane.showMessageDialog(null, "\nBook's id: " + book.getBookId() + "\nBook's name: " + book.getBookName() + "\nBook's author: " + book.getBookAuthor());
+        try{
+            for(Book book : booksArr){
+                JOptionPane.showMessageDialog(null, "\nBook's id: " + book.getBookId() + "\nBook's name: " + book.getBookName() + "\nAuthor's Id: " + book.getBookAuthorId() + "\nAuthor's name: " + book.getBookAuthorName());
+            }
+        }catch (NullPointerException e){
+            menu();
         }
 
         menu();
@@ -132,10 +152,7 @@ public class Start {
                         for(Author author : authorsArr){
                             if(author.getAuthorId() == Integer.parseInt(newValue)){
                                 book.setBookAuthor(author);
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Author not found. Try again...");
-                                updateBook();
-                            }
+                            } 
                         }
                             break;
                 }
@@ -152,6 +169,7 @@ public class Start {
         for(Book book : booksArr){
             if(book.getBookId() == bookId){
                 booksArr.remove(book);
+                iterator--;
 
                 JOptionPane.showMessageDialog(null, "Book successfully removed.");
 
@@ -201,6 +219,7 @@ public class Start {
                     menu();
             }
         } catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "You probably typed a letter where a number is expected. Try again...");
             menu();
         }
 
