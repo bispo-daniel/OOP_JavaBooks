@@ -1,23 +1,17 @@
-package OOP_javaBooks;
-
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class Start {
+public class Main {
     static ArrayList<Author> authorsArr = new ArrayList<Author>();
-    private static int it = 0;
 
     public static void createAuthor(){
-        String authorId = JOptionPane.showInputDialog(null, "Type the author's Id...");
-        int idInteger = Integer.parseInt(authorId);
+        String authorIdString = JOptionPane.showInputDialog(null, "Type the author's Id...");
+        int idInteger = Integer.parseInt(authorIdString);
         
         String authorName = JOptionPane.showInputDialog(null, "Type the author's name...");
         
-        authorsArr.add(new Author());
-        authorsArr.get(it).setAuthorId(idInteger);
-        authorsArr.get(it).setAuthorName(authorName);
+        authorsArr.add(new Author(idInteger, authorName));
 
-        it++;
         menu();
     }
 
@@ -69,18 +63,14 @@ public class Start {
             } 
         }
 
-        //Subtracting 1 from the "it" so that it can correctly ident for the next call of createAuthor()
-        //Pushing the new author instance at it's correct position 
-        it--;
         menu();
     }
 
     //----------------------------BOOK-----------------------------------
 
     static ArrayList<Book> booksArr = new ArrayList<Book>();
-    private static int iterator = 0;
+    static int iterator = 0;
 
-    
     private static void createBook() {
         String idIn = JOptionPane.showInputDialog(null, "Type the book's Id...");
         int bookId = Integer.parseInt(idIn);
@@ -90,20 +80,19 @@ public class Start {
         String bookAuthor = JOptionPane.showInputDialog(null, "Type the book's author id...");
         int bookAuthorId = Integer.parseInt(bookAuthor);
         
-        booksArr.add(new Book());
-        booksArr.get(iterator).setBookId(bookId);
-        booksArr.get(iterator).setBookName(bookName);
+        Book book = new Book();
+        book.setBookId(bookId);
+        book.setBookName(bookName);
 
         ArrayList<Integer> cloneAuthors = new ArrayList<>();
         
         for(Author author : authorsArr){
             if(author.getAuthorId() == bookAuthorId){
-                booksArr.get(iterator).setBookAuthor(author);
+                book.setBookAuthor(author);
+                booksArr.add(book);
                 iterator++;
             } else if(author.getAuthorId() != bookAuthorId){
                 cloneAuthors.add(authorsArr.indexOf(author));
-
-                System.out.println("Inside elif: ");
 
                 for(Integer i : cloneAuthors){
                     System.out.println(i);

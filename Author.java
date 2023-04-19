@@ -1,8 +1,12 @@
-package OOP_javaBooks;
-
 public class Author {
     private int authorId;
     private String authorName;
+
+    //Constructor
+    public Author(int authorId, String authorName){
+        this.authorId = authorId;
+        this.authorName = authorName;
+    }
 
     public int getAuthorId(){
         return authorId;
